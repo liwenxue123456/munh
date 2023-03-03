@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.TimeTemplateDao">
+
+    <resultMap id="TimeTemplateMap" type="TimeTemplate">
+        <id property="timeTemplateId" column="timetemplateid"/>
+        <result property="templateName" column="templatename"/>
+        <result property="templateBeLong" column="templatebelong"/>
+        <result property="amTime" column="amtime"/>
+        <result property="amStart" column="amstart"/>
+        <result property="amStop" column="amstop"/>
+        <result property="pmTime" column="pmtime"/>
+        <result property="pmStart" column="pmstart"/>
+        <result property="pmStop" column="pmstop"/>
+        <association property="dept" javaType="Dept">
+            <id property="deptNo" column="deptNo"/>
+            <result property="deptName" column="deptName"/>
+
+        </association>
+        <association property="doctor" javaType="Doctor">
+            <id property="did" column="did"/>
+            <result property="dName" column="dname"/>
+
+        </association>
+        <association property="organ" javaType="Organ">
+            <id property="organId" column="organId"/>
+            <result property="organName" column="organName"/>
+        </association>
+    </resultMap>
+    <select id="findTimeTemplate" resultMap="TimeTemplateMap">
+        select t.timetemplateid,
+               t.templatename,
+               t.templatebelong,
+               t.amtime,
+               t.amstart,
+               t.amstop,
+               t.pmtime,
+               t.pmstart,
+               t.pmstop,
+               t.organid,
+               t.deptno,
+               t.did,
+               t.useful,
+               o.organId,
+               o.organName,
+               d2.did,
+               d2.dname,
+               d.deptNo,
+               d.deptName
+
+        from timetemplate t
+                 left join dept d on t.deptNo = d.deptno
+                 left join doctor d2 on t.did = d2.did
+                 left join organ o on t.organId = o.organId
+
+    </select>
+    <delete id="deleteTimeTemplate" parameterType="int">
+        delete
+        from timetemplate
+        where timetemplateid = #{timesLotId}
+    </delete>
+    <insert id="addTimeTemplate" parameterType="TimeTemplate">
+        insert into timetemplate(timetemplateid, templatename, templatebelong,
+                                 amtime, amstart, amstop, pmtime, pmstart, pmstop,
+                                 organid, deptno, did, useful)
+        VALUES (#{timeTemplateId}, #{templateName},
+                #{templateBeLong}, #{amTime}, #{amStart},
+                #{amStop}, #{pmTime}, #{pmStart}, #{pmStop},
+                #{organ.organId}, #{dept.deptNo}, #{doctor.did}, #{useFul})
+
+    </insert>
+    <update id="updateTimeTemplate" parameterType="TimeTemplate">
+        update timetemplate
+        set templatename=#{templateName},
+            templatebelong=#{templateBeLong},
+            amtime=#{amTime},
+            amstart=#{amStart},
+            amstop=#{amStop},
+            pmtime=#{pmTime},
+            pmstart=#{pmStart},
+            pmstop=#{pmStop},
+            organid=#{organ.organId},
+            deptno=#{dept.deptNo},
+            did=#{doctor.did},
+            useful=#{useFul}
+        where timetemplateid = #{timeTemplateId}
+    </update>
+    <select id="showOneTimeTemplate" resultMap="TimeTemplateMap">
+        select timetemplateid,
+               templatename,
+               templatebelong,
+               amtime,
+               amstart,
+               amstop,
+               pmtime,
+               pmstart,
+               pmstop,
+               organid,
+               deptno,
+               did,
+               useful
+        from timetemplate
+        where timetemplateid = #{timeTemplateId}
+    </select>
+
+    <select id="findByCondition" resultMap="TimeTemplateMap">
+        select t.timetemplateid,
+        t.templatename,
+        t.templatebelong,
+        t.amtime,
+        t.amstart,
+        t.amstop,
+        t.pmtime,
+        t.pmstart,
+        t.pmstop,
+        t.organid,
+        t.deptno,
+        t.did,
+        t.useful,
+        o.organId,
+        o.organName,
+        d2.did,
+        d2.dname,
+        d.deptNo,
+        d.deptName
+
+        from timetemplate t
+        left join dept d on t.deptNo = d.deptno
+        left join doctor d2 on t.did = d2.did
+        left join organ o on t.organId = o.organId
+
+        <where>
+            templatename like concat('%',#{templateName},'%')
+            <if test="templateBelong!=null and templateBelong!='' ">
+                and templatebelong=#{templateBelong}
+            </if>
+            <if test="useful!=null">
+                and t.useful =#{useful}
+            </if>
+            <if test="organId!=null">
+                and o.organId =#{organId}
+            </if>
+            <if test="deptNo!=null">
+                and d.deptNo =#{deptNo}
+            </if>
+            <if test="did!=null">
+                and d2.did =#{did}
+            </if>
+
+        </where>
+    </select>
+    <delete id="removeMove">
+        delete from timetemplate where timetemplateid in
+        <foreach collection="array" item="timeTemplateId" open="(" close=")" separator=",">
+            #{timeTemplateId}
+        </foreach>
+    </delete>
+</mapper>

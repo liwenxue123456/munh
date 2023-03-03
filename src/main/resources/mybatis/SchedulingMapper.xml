@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.SchedulingDao">
+    <resultMap id="SchedulingMap" type="Scheduling">
+        <id property="schedulingId" column="schedulingid"/>
+        <result property="schedulingType" column="schedulingtype"/>
+        <!--        <result property="organId" column="organid"/>-->
+        <!--        <result property="deptNo" column="deptno"/>-->
+        <!--        <result property="did" column="did"/>-->
+        <result property="numClass" column="numclass"/>
+        <result property="numType" column="numtype"/>
+        <result property="week" column="week"/>
+        <result property="classes" column="classes"/>
+        <result property="timeCode" column="timecode"/>
+        <result property="sjdHys" column="sjdhys"/>
+        <result property="addNumAble" column="addnumable"/>
+        <result property="isHoliday" column="isholiday"/>
+        <result property="numWindow" column="numwindow"/>
+        <result property="useful" column="useful"/>
+        <association property="dept" javaType="Dept">
+            <id property="deptNo" column="deptNo"/>
+            <result property="deptName" column="deptName"/>
+
+        </association>
+        <association property="doctor" javaType="Doctor">
+            <id property="did" column="did"/>
+            <result property="dName" column="dName"/>
+
+        </association>
+        <association property="organ" javaType="Organ">
+            <id property="organId" column="organId"/>
+            <result property="organName" column="organName"/>
+        </association>
+    </resultMap>
+
+    <select id="findScheduling" resultMap="SchedulingMap">
+        select schedulingid,
+               schedulingtype,
+               o.organid,
+               d.deptno,
+               d2.did,
+               o.organName,
+               d.deptName,
+               d2.dname,
+               numclass,
+               numtype,
+               week,
+               classes,
+               timecode,
+               sjdhys,
+               addnumable,
+               isholiday,
+               numwindow,
+               useful
+        from scheduling s
+                 left join dept d on s.deptno = d.deptNo
+                 left join doctor d2 on s.did = d2.did
+                 left join organ o on s.organid = o.organId
+    </select>
+    <insert id="addScheduling" parameterType="Scheduling">
+        insert into  scheduling (schedulingid, schedulingtype, organid, deptno, did, numclass, numtype, week, classes, timecode, sjdhys, addnumable, isholiday, numwindow, useful)
+        VALUES (#{schedulingId},#{schedulingType},#{organid},
+                #{deptno},#{did},#{numClass},#{numType},#{week},
+                #{classes},#{timeCode},#{sjdHys},#{addNumAble},#{isHoliday},
+                #{numWindow},#{useful}
+
+                  )
+
+    </insert>
+
+    <select id="findByCondition" resultMap="SchedulingMap">
+        select schedulingid,
+        schedulingtype,
+        o.organid,
+        d.deptno,
+        d2.did,
+        o.organName,
+        d.deptName,
+        d2.dname,
+        numclass,
+        numtype,
+        week,
+        classes,
+        timecode,
+        sjdhys,
+        addnumable,
+        isholiday,
+        numwindow,
+        useful
+        from scheduling s
+        left join dept d on s.deptno = d.deptNo
+        left join doctor d2 on s.did = d2.did
+        left join organ o on s.organid = o.organId
+        <where>
+            <if test="organId != null and organId!=''" >
+                o.organId = #{organId}
+            </if>
+            <if test="schedulingType!=null and schedulingType!=''">
+                and schedulingtype=#{schedulingType}
+            </if>
+            <if test="deptNo!=null and deptNo!=''">
+                and d.deptNo=#{deptNo}
+            </if>
+            <if test="did!=null and did!=''">
+                and d2.did=#{did}
+            </if>
+            <if test="numClass!=null and numClass!='' ">
+                and numclass=#{numClass}
+            </if>
+            <if test="numType!=null and numType!='' ">
+                and numtype=#{numType}
+            </if>
+            <if test="week!=null and week!='' ">
+                and week=#{week}
+            </if>
+            <if test="classes!=null and classes!=''">
+                and classes=#{classes}
+            </if>
+            <if test="useful!=null and useful!=''">
+                and useful=#{useful}
+            </if>
+            <if test="isHoliday!=null and isHoliday!=''">
+                and isholiday=#{isHoliday}
+            </if>
+
+        </where>
+    </select>
+
+
+</mapper>

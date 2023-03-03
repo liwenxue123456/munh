@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.OrganDao">
+    <select id="findOrgan" resultType="Organ">
+        select organId, organName
+        from organ
+    </select>
+    <insert id="addOrgan" parameterType="Organ">
+        insert into organ(organId, organName)
+        values (#{organId}, #{organName})
+    </insert>
+    <update id="updateOrgan" parameterType="Organ">
+        update cloud_his.organ
+        set cloud_his.organ.organName=#{organName}
+        where cloud_his.organ.organId=#{organId}
+    </update>
+    <delete id="deleteOrgan" parameterType="Integer">
+        delete
+        from cloud_his.organ
+        where cloud_his.organ.organId = #{id}
+    </delete>
+    <select id="findByOne" resultType="Organ">
+        select organId, organName
+        from cloud_his.organ
+        where organId = #{organId}
+    </select>
+    <delete id="deleteMove" parameterType="Integer">
+        delete from cloud_his.organ where cloud_his.organ.organId in
+        <foreach collection="array" item="organId" open="(" close=")" separator=",">
+            #{organId}
+        </foreach>
+    </delete>
+    <select id="findByCondition" resultType="Organ">
+        select organId, organName
+        from organ
+        where organName like concat('%', #{organName}, '%')
+
+    </select>
+</mapper>
