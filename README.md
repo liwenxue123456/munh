@@ -31,4 +31,6 @@ springboot+mysql+mybatis연동 병원 프로젝트
 <img width="1109" alt="a105d20846f02de0f057ddbd3eb3b36" src="https://user-images.githubusercontent.com/125478209/223052622-e4cc1c0c-1b2e-4819-9820-32cd769fbf91.png">
 <img width="996" alt="bbaae5d8da936c3a957bbac75ccd729" src="https://user-images.githubusercontent.com/125478209/223052632-c779232b-a46c-4315-a56e-221baf98cfb8.png">
 
-# 6.프로젝트 기능 코드
+# 6.프로젝트 기능 소스코드
+
+
