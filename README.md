@@ -35,6 +35,9 @@ springboot+mysql+mybatis연동 병원 프로젝트
 
 # 6.프로젝트 기능 소스코드
 
-[병원 진료 시간틀.md](https://github.com/liwenxue123456/munh/files/10896213/default.md)
+1.[병원 진료 시간틀.md](https://github.com/liwenxue123456/munh/files/10896213/default.md)
+
+2.[시간틀 구체화.md](https://github.com/liwenxue123456/munh/files/10896280/default.md)
+
 
 
